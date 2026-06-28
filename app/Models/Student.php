@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -13,6 +14,7 @@ class Student extends Model
     use HasFactory;
 
     protected $fillable = [
+        'parent_id',
         'first_name',
         'last_name',
         'date_of_birth',
@@ -31,6 +33,16 @@ class Student extends Model
             'date_of_birth' => 'date',
             'is_active' => 'boolean',
         ];
+    }
+
+    /**
+     * The parent (user account) who registered this student, if any.
+     *
+     * @return BelongsTo<User, $this>
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'parent_id');
     }
 
     /**

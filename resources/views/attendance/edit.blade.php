@@ -40,53 +40,52 @@
                 <a href="{{ route('classes.show', $class) }}" class="font-semibold text-brand-600">Assign students →</a>
             </div>
         @else
-            <section class="mt-6 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm">
-                <div class="flex flex-col gap-4 border-b border-neutral-100 bg-neutral-50/70 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-                    <div class="grid grid-cols-4 gap-5 sm:flex sm:gap-10">
+            <section class="mt-6">
+                <div class="flex flex-col gap-4 rounded-2xl bg-neutral-100/80 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7">
+                    <div class="grid grid-cols-4 gap-5 sm:flex sm:gap-12">
                         <template x-for="status in statuses" :key="status">
                             <div>
                                 <div class="text-xl font-bold sm:text-2xl" :class="meta[status].text" x-text="count(status)"></div>
-                                <div class="text-[11px] font-medium capitalize text-neutral-500 sm:text-xs" x-text="status"></div>
+                                <div class="text-xs font-medium capitalize text-neutral-500" x-text="status"></div>
                             </div>
                         </template>
                     </div>
-                    <button type="button" @click="markAllPresent()" class="min-h-10 self-start rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-700 transition hover:bg-emerald-100 sm:self-auto">Mark all present</button>
+                    <button type="button" @click="markAllPresent()" class="min-h-10 self-start rounded-lg px-3 py-2 text-sm font-bold text-emerald-700 transition hover:bg-white/70 sm:self-auto">Mark all present</button>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3 p-3 sm:grid-cols-3 sm:p-4 lg:grid-cols-4 xl:grid-cols-5">
+                <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
                     <template x-for="(p, index) in players" :key="p.id">
-                        <div class="flex flex-col overflow-hidden rounded-xl border bg-white transition"
+                        <div class="flex min-h-64 flex-col items-center rounded-2xl border bg-white px-4 py-5 text-center transition"
                             :class="meta[p.status].card">
                             <input type="hidden" :name="`attendance[${p.id}]`" :value="p.status">
-                            <div class="relative aspect-square w-full bg-neutral-100">
+                            <div class="h-20 w-20 overflow-hidden rounded-full bg-neutral-100">
                                 <template x-if="p.photo">
                                     <img :src="p.photo" :alt="p.name" class="h-full w-full object-cover">
                                 </template>
                                 <template x-if="!p.photo">
-                                    <span class="flex h-full w-full items-center justify-center text-3xl font-bold text-neutral-300" x-text="index + 1"></span>
+                                    <span class="flex h-full w-full items-center justify-center text-neutral-400">
+                                        <svg class="h-10 w-10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                            <path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-4.42 0-8 2.69-8 6v1a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1c0-3.31-3.58-6-8-6Z"/>
+                                        </svg>
+                                    </span>
                                 </template>
-                                <span class="absolute right-2 top-2 rounded-full px-2 py-1 text-[10px] font-bold capitalize shadow-sm" :class="meta[p.status].pill" x-text="p.status"></span>
                             </div>
-                            <div class="flex min-w-0 flex-1 flex-col justify-between p-2.5">
+                            <div class="mt-4 flex min-w-0 flex-1 flex-col justify-between self-stretch">
                                 <div>
-                                    <h2 class="line-clamp-2 text-sm font-bold leading-tight text-neutral-900" x-text="p.name"></h2>
-                                    <p class="mt-1 text-xs text-neutral-500" x-text="p.age ? `Age ${p.age}` : 'Age not provided'"></p>
+                                    <h2 class="line-clamp-2 text-base font-bold leading-tight text-neutral-900" x-text="p.name"></h2>
+                                    <p class="mt-1 text-sm text-neutral-500" x-text="p.age ? `Age ${p.age}` : 'Age not provided'"></p>
                                 </div>
-                                <div class="mt-3 grid grid-cols-2 gap-1.5">
-                                    <template x-for="status in statuses" :key="status">
-                                        <button type="button" @click="setStatus(p, status)"
-                                            class="min-h-9 min-w-0 rounded-lg border px-1.5 py-1 text-[11px] font-bold capitalize leading-tight transition"
-                                            :class="p.status === status ? meta[status].active : 'border-neutral-200 bg-white text-neutral-500 hover:border-neutral-300 hover:bg-neutral-50'"
-                                            :aria-pressed="p.status === status" x-text="status"></button>
-                                    </template>
-                                </div>
+                                <button type="button" @click="nextStatus(p)"
+                                    class="mt-5 min-h-12 w-full rounded-xl border px-3 py-2 text-sm font-bold capitalize transition"
+                                    :class="meta[p.status].active"
+                                    x-text="`${meta[p.status].icon} ${p.status}`"></button>
                             </div>
                         </div>
                     </template>
                 </div>
             </section>
 
-            <div class="sticky bottom-[4.75rem] z-20 mt-5 flex items-center justify-between gap-4 rounded-2xl border border-neutral-200 bg-white/95 p-3 shadow-[0_12px_40px_rgba(0,0,0,.14)] backdrop-blur md:bottom-4 sm:p-4">
+            <div class="sticky bottom-[4.75rem] z-20 mt-10 flex items-center justify-between gap-4 border-t border-neutral-100 bg-[#f8f8f7]/95 py-6 backdrop-blur md:bottom-0">
                 <a href="{{ route('classes.show', $class) }}" class="px-3 py-2 text-sm font-semibold text-neutral-500 hover:text-neutral-800">Cancel</a>
                 <div class="flex items-center gap-3">
                     <span class="hidden text-xs text-neutral-500 sm:block"><strong class="text-neutral-800" x-text="players.length"></strong> players marked</span>
@@ -103,12 +102,16 @@
             players,
             statuses: ['present', 'absent', 'late', 'excused'],
             meta: {
-                present: { text: 'text-emerald-700', pill: 'bg-emerald-100 text-emerald-700', active: 'border-emerald-400 bg-emerald-50 text-emerald-700 shadow-sm', card: 'border-emerald-300 ring-1 ring-emerald-200' },
-                absent: { text: 'text-rose-700', pill: 'bg-rose-100 text-rose-700', active: 'border-rose-400 bg-rose-50 text-rose-700 shadow-sm', card: 'border-rose-300 ring-1 ring-rose-200' },
-                late: { text: 'text-amber-700', pill: 'bg-amber-100 text-amber-700', active: 'border-amber-400 bg-amber-50 text-amber-700 shadow-sm', card: 'border-amber-300 ring-1 ring-amber-200' },
-                excused: { text: 'text-blue-700', pill: 'bg-blue-100 text-blue-700', active: 'border-blue-400 bg-blue-50 text-blue-700 shadow-sm', card: 'border-blue-300 ring-1 ring-blue-200' },
+                present: { text: 'text-neutral-900', icon: '✓', active: 'border-emerald-300 bg-emerald-50 text-emerald-700 shadow-sm hover:bg-emerald-100', card: 'border-emerald-200' },
+                absent: { text: 'text-neutral-900', icon: '×', active: 'border-rose-300 bg-rose-50 text-rose-700 shadow-sm hover:bg-rose-100', card: 'border-rose-200' },
+                late: { text: 'text-neutral-900', icon: '•', active: 'border-amber-300 bg-amber-50 text-amber-700 shadow-sm hover:bg-amber-100', card: 'border-amber-200' },
+                excused: { text: 'text-neutral-900', icon: '−', active: 'border-neutral-300 bg-neutral-100 text-neutral-700 shadow-sm hover:bg-neutral-200', card: 'border-neutral-200' },
             },
             setStatus(player, status) { player.status = status; },
+            nextStatus(player) {
+                const current = this.statuses.indexOf(player.status);
+                player.status = this.statuses[(current + 1) % this.statuses.length];
+            },
             markAllPresent() { this.players.forEach(player => player.status = 'present'); },
             count(status) { return this.players.filter(player => player.status === status).length; },
         };

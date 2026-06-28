@@ -43,6 +43,19 @@ class User extends Authenticatable
         return $this->role === 'coach';
     }
 
+    public function isParent(): bool
+    {
+        return $this->role === 'parent';
+    }
+
+    /**
+     * The route name this user should land on after signing in.
+     */
+    public function homeRoute(): string
+    {
+        return $this->isParent() ? 'parent.dashboard' : 'dashboard';
+    }
+
     /**
      * Classes this user coaches.
      *
@@ -51,5 +64,15 @@ class User extends Authenticatable
     public function classes(): HasMany
     {
         return $this->hasMany(TrainingClass::class, 'coach_id');
+    }
+
+    /**
+     * Children (students) this parent has registered.
+     *
+     * @return HasMany<Student, $this>
+     */
+    public function students(): HasMany
+    {
+        return $this->hasMany(Student::class, 'parent_id');
     }
 }

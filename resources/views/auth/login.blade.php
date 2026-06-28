@@ -32,7 +32,7 @@
                 <x-app-logo class="h-10" />
             </div>
 
-            <h1 class="text-2xl font-semibold tracking-tight">Coach sign in</h1>
+            <h1 class="text-2xl font-semibold tracking-tight">Sign in</h1>
             <p class="mt-1 text-sm text-neutral-500">Enter your credentials to continue.</p>
 
             @if ($errors->any())
@@ -71,6 +71,11 @@
                     Sign in
                 </button>
             </form>
+
+            <p class="mt-6 text-center text-sm text-neutral-500">
+                Are you a parent?
+                <a href="{{ route('register') }}" class="font-semibold text-brand-600 hover:text-brand-700">Create an account</a>
+            </p>
         </div>
     </div>
 </div>

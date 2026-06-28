@@ -12,8 +12,8 @@ class ExampleTest extends TestCase
      */
     public function test_the_root_redirects_guests_to_login(): void
     {
-        // "/" -> dashboard (auth) -> login for guests.
-        $this->get('/')->assertRedirect(route('dashboard'));
+        // Guests are sent straight to login; the dashboard stays auth-guarded.
+        $this->get('/')->assertRedirect(route('login'));
         $this->get('/dashboard')->assertRedirect(route('login'));
     }
 }

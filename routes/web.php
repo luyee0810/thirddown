@@ -2,23 +2,41 @@
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\Parent\ChildController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\StudentController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => redirect()->route('dashboard'));
+Route::get('/', fn () => redirect()->route(Auth::check() ? Auth::user()->homeRoute() : 'login'));
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'show'])->name('login');
     Route::post('/login', [LoginController::class, 'store']);
+
+    Route::get('/register', [RegisterController::class, 'show'])->name('register');
+    Route::post('/register', [RegisterController::class, 'store']);
 });
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+});
 
+// Parent area
+Route::middleware(['auth', 'role:parent'])->prefix('parent')->name('parent.')->group(function () {
+    Route::get('/', [ChildController::class, 'index'])->name('dashboard');
+    Route::get('/children/create', [ChildController::class, 'create'])->name('children.create');
+    Route::post('/children', [ChildController::class, 'store'])->name('children.store');
+    Route::get('/children/{child}/edit', [ChildController::class, 'edit'])->name('children.edit');
+    Route::put('/children/{child}', [ChildController::class, 'update'])->name('children.update');
+});
+
+// Coach / admin area
+Route::middleware(['auth', 'role:coach,admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Classes
