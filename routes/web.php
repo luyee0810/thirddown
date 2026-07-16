@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\ClassController as AdminClassController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\StudentController as AdminStudentController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -35,8 +39,35 @@ Route::middleware(['auth', 'role:parent'])->prefix('parent')->name('parent.')->g
     Route::put('/children/{child}', [ChildController::class, 'update'])->name('children.update');
 });
 
-// Coach / admin area
-Route::middleware(['auth', 'role:coach,admin'])->group(function () {
+// Admin area — site-wide management.
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    // Users (coaches, parents, admins)
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
+    Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+    Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+    Route::put('/users/{user}/reassign-classes', [AdminUserController::class, 'reassignClasses'])->name('users.reassign-classes');
+
+    // Students
+    Route::get('/students', [AdminStudentController::class, 'index'])->name('students.index');
+    Route::get('/students/create', [AdminStudentController::class, 'create'])->name('students.create');
+    Route::post('/students', [AdminStudentController::class, 'store'])->name('students.store');
+    Route::get('/students/{student}/edit', [AdminStudentController::class, 'edit'])->name('students.edit');
+    Route::put('/students/{student}', [AdminStudentController::class, 'update'])->name('students.update');
+    Route::delete('/students/{student}', [AdminStudentController::class, 'destroy'])->name('students.destroy');
+
+    // Classes
+    Route::get('/classes', [AdminClassController::class, 'index'])->name('classes.index');
+    Route::put('/classes/{class}/coach', [AdminClassController::class, 'updateCoach'])->name('classes.coach');
+    Route::delete('/classes/{class}', [AdminClassController::class, 'destroy'])->name('classes.destroy');
+});
+
+// Coach area
+Route::middleware(['auth', 'role:coach'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Classes

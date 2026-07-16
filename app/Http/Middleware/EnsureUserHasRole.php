@@ -19,9 +19,7 @@ class EnsureUserHasRole
         $user = $request->user();
 
         if (! $user || ! in_array($user->role, $roles, true)) {
-            $home = $user?->isParent() ? route('parent.dashboard') : route('dashboard');
-
-            return redirect($home);
+            return redirect($user ? route($user->homeRoute()) : route('login'));
         }
 
         return $next($request);

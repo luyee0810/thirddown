@@ -53,7 +53,11 @@ class User extends Authenticatable
      */
     public function homeRoute(): string
     {
-        return $this->isParent() ? 'parent.dashboard' : 'dashboard';
+        return match ($this->role) {
+            'admin' => 'admin.dashboard',
+            'parent' => 'parent.dashboard',
+            default => 'dashboard',
+        };
     }
 
     /**
