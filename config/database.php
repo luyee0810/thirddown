@@ -58,7 +58,9 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            'engine' => null,
+            // Force InnoDB: shared host defaults to MyISAM (1000-byte key
+            // limit), which breaks utf8mb4 composite indexes. InnoDB allows 3072.
+            'engine' => env('DB_ENGINE', 'InnoDB'),
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
@@ -78,7 +80,9 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
-            'engine' => null,
+            // Force InnoDB: shared host defaults to MyISAM (1000-byte key
+            // limit), which breaks utf8mb4 composite indexes. InnoDB allows 3072.
+            'engine' => env('DB_ENGINE', 'InnoDB'),
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
