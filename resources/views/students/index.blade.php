@@ -20,7 +20,7 @@
                         <td class="px-6 py-4"><a href="{{ route('students.show', $student) }}" class="flex items-center gap-3"><x-student-avatar :student="$student" size="h-10 w-10" /><span class="font-semibold text-neutral-900">{{ $student->full_name }}</span></a></td>
                         <td class="px-5 py-4 text-neutral-600">{{ $student->parent_name ?: 'Not provided' }}@if ($student->parent_phone)<div class="mt-0.5 text-xs text-neutral-400">{{ $student->parent_phone }}</div>@endif</td>
                         <td class="px-5 py-4 font-medium text-neutral-600">{{ $student->classes_count }}</td>
-                        <td class="px-6 py-4 text-right"><a href="{{ route('students.show', $student) }}" class="font-semibold text-brand-600">View →</a></td>
+                        <td class="px-6 py-4 text-right"><a href="{{ route('students.edit', $student) }}" class="cursor-pointer font-semibold text-neutral-500 hover:text-neutral-800">Edit</a><a href="{{ route('students.show', $student) }}" class="ml-4 cursor-pointer font-semibold text-brand-600">View →</a></td>
                     </tr>
                 @endforeach
             </tbody>

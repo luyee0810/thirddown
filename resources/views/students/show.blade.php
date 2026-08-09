@@ -8,13 +8,17 @@
     {{-- Student header --}}
     <div class="mt-3 flex items-center gap-4">
         <x-student-avatar :student="$student" size="h-16 w-16" />
-        <div>
+        <div class="min-w-0 flex-1">
             <h1 class="text-2xl font-semibold tracking-tight">{{ $student->full_name }}</h1>
             <p class="mt-0.5 text-sm text-neutral-500">
                 @if ($student->date_of_birth) Age {{ $student->date_of_birth->age }} @endif
                 @if ($student->parent_name) · Parent: {{ $student->parent_name }}@if ($student->parent_phone) ({{ $student->parent_phone }})@endif @endif
             </p>
         </div>
+        <a href="{{ route('students.edit', $student) }}"
+            class="inline-flex min-h-11 shrink-0 cursor-pointer items-center rounded-xl border border-neutral-300 bg-white px-4 py-2.5 text-sm font-semibold text-neutral-700 shadow-sm transition hover:bg-neutral-50">
+            Edit details
+        </a>
     </div>
 
     <div class="mt-8 grid gap-6 lg:grid-cols-2">
