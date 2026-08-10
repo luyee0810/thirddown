@@ -30,7 +30,7 @@
                     <div class="min-w-0 flex-1">
                         <h2 class="truncate text-base font-bold text-neutral-900">{{ $child->full_name }}</h2>
                         <p class="text-xs text-neutral-500">
-                            {{ $child->date_of_birth ? 'Age '.$child->date_of_birth->age : 'Age not set' }}
+                            {{ ! is_null($child->age) ? 'Age '.$child->age : 'Age not set' }}
                             <span class="mx-1">·</span>
                             {{ $child->classes_count }} {{ Str::plural('class', $child->classes_count) }}
                         </p>

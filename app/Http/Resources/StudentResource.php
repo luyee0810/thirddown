@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Student */
+/** @mixin Student */
 class StudentResource extends JsonResource
 {
     /**
@@ -20,6 +21,7 @@ class StudentResource extends JsonResource
             'full_name' => $this->full_name,
             'photo_url' => $this->photo_url,
             'date_of_birth' => $this->date_of_birth?->toDateString(),
+            'age' => $this->age,
             'gender' => $this->gender,
             'parent' => [
                 'name' => $this->parent_name,
@@ -27,6 +29,7 @@ class StudentResource extends JsonResource
                 'phone' => $this->parent_phone,
             ],
             'notes' => $this->notes,
+            'credits' => $this->credits,
             'is_active' => $this->is_active,
             // Pivot data when loaded through a class relationship.
             'enrollment' => $this->whenPivotLoaded('enrollments', fn () => [

@@ -18,10 +18,18 @@
             <input type="date" name="date_of_birth" value="{{ old('date_of_birth', optional($student->date_of_birth ?? null)->format('Y-m-d')) }}"
                 class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20">
         </div>
+        <x-age-field :age="$student->age ?? null" />
         <div>
             <label class="block text-sm font-medium text-neutral-700">Gender <span class="text-neutral-400">(optional)</span></label>
             <input name="gender" value="{{ old('gender', $student->gender ?? '') }}"
                 class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-neutral-700">Remaining credits</label>
+            <input type="number" name="credits" step="1" value="{{ old('credits', $student->credits ?? 0) }}"
+                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20">
+            <p class="mt-1 text-xs text-neutral-400">One credit is used each time attendance is marked. May go negative.</p>
+            @error('credits') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
         </div>
     </div>
 </div>

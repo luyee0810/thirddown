@@ -22,6 +22,7 @@
             <thead class="border-b border-neutral-200 bg-neutral-50/80 text-left text-xs uppercase tracking-wider text-neutral-500">
                 <tr>
                     <th class="px-6 py-4 font-semibold">Name</th>
+                    <th class="px-5 py-4 font-semibold">Age</th>
                     <th class="hidden px-5 py-4 font-semibold sm:table-cell">Guardian</th>
                     <th class="hidden px-5 py-4 font-semibold md:table-cell">Parent account</th>
                     <th class="px-5 py-4 font-semibold">Classes</th>
@@ -37,6 +38,7 @@
                                 <span class="cursor-pointer font-semibold text-neutral-900 hover:text-slate-700">{{ $student->full_name }}</span>
                             </a>
                         </td>
+                        <td class="px-5 py-4 text-neutral-600">{{ $student->age ?? '—' }}</td>
                         <td class="hidden px-5 py-4 text-neutral-600 sm:table-cell">{{ $student->parent_name ?: 'Not provided' }}</td>
                         <td class="hidden px-5 py-4 text-neutral-600 md:table-cell">{{ $student->parent?->name ?? '—' }}</td>
                         <td class="px-5 py-4 font-medium text-neutral-600">{{ $student->classes_count }}</td>

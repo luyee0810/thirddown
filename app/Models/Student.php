@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
+use Database\Factories\StudentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Student extends Model
 {
-    /** @use HasFactory<\Database\Factories\StudentFactory> */
+    /** @use HasFactory<StudentFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -25,6 +27,7 @@ class Student extends Model
         'notes',
         'photo_path',
         'is_active',
+        'credits',
     ];
 
     protected function casts(): array
@@ -32,6 +35,7 @@ class Student extends Model
         return [
             'date_of_birth' => 'date',
             'is_active' => 'boolean',
+            'credits' => 'integer',
         ];
     }
 
@@ -79,6 +83,15 @@ class Student extends Model
     }
 
     /**
+     * Age in whole years, derived from the date of birth so it stays current
+     * without any stored value to refresh. Null when no date of birth is set.
+     */
+    public function getAgeAttribute(): ?int
+    {
+        return $this->date_of_birth?->age;
+    }
+
+    /**
      * Public URL for the student's photo, or null to fall back to a default icon.
      */
     public function getPhotoUrlAttribute(): ?string
@@ -89,6 +102,6 @@ class Student extends Model
 
         return str_starts_with($this->photo_path, 'http')
             ? $this->photo_path
-            : \Illuminate\Support\Facades\Storage::url($this->photo_path);
+            : Storage::url($this->photo_path);
     }
 }

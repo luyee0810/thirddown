@@ -6,7 +6,7 @@
             @if ($session->attendances_count)
                 <span class="inline-flex shrink-0 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700">Completed</span>
             @else
-                <span class="inline-flex shrink-0 rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700">Upcoming</span>
+                <span class="inline-flex shrink-0 rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700">Attendance Unmarked</span>
             @endif
         </div>
         <div class="mt-1 flex flex-wrap gap-x-2 text-sm text-neutral-500">

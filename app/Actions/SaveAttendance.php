@@ -4,6 +4,7 @@ namespace App\Actions;
 
 use App\Models\Attendance;
 use App\Models\ClassSession;
+use App\Models\Student;
 use Illuminate\Support\Facades\DB;
 
 class SaveAttendance
@@ -24,10 +25,26 @@ class SaveAttendance
                     continue;
                 }
 
-                Attendance::updateOrCreate(
+                $attendance = Attendance::firstOrNew(
                     ['class_session_id' => $session->id, 'student_id' => $studentId],
-                    ['status' => $status, 'marked_by' => $markedBy, 'marked_at' => now()],
                 );
+
+                $attendance->fill(['status' => $status, 'marked_by' => $markedBy, 'marked_at' => now()]);
+
+                // A credit is spent only when the student actually trains
+                // (present or late). Absent and excused are free, so switching
+                // between the two kinds charges or refunds exactly once —
+                // credit_charged is what keeps it from double-counting.
+                // Balances may go negative.
+                if ($attendance->isChargeable() && ! $attendance->credit_charged) {
+                    Student::whereKey($studentId)->decrement('credits');
+                    $attendance->credit_charged = true;
+                } elseif (! $attendance->isChargeable() && $attendance->credit_charged) {
+                    Student::whereKey($studentId)->increment('credits');
+                    $attendance->credit_charged = false;
+                }
+
+                $attendance->save();
             }
         });
     }

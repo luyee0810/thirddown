@@ -2,19 +2,21 @@
 
 namespace App\Models;
 
+use Database\Factories\AttendanceFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Attendance extends Model
 {
-    /** @use HasFactory<\Database\Factories\AttendanceFactory> */
+    /** @use HasFactory<AttendanceFactory> */
     use HasFactory;
 
     protected $fillable = [
         'class_session_id',
         'student_id',
         'status',
+        'credit_charged',
         'marked_by',
         'marked_at',
         'notes',
@@ -24,7 +26,20 @@ class Attendance extends Model
     {
         return [
             'marked_at' => 'datetime',
+            'credit_charged' => 'boolean',
         ];
+    }
+
+    /**
+     * Statuses that consume a session credit. Absent and excused are free.
+     *
+     * @var array<string>
+     */
+    public const CHARGEABLE = ['present', 'late'];
+
+    public function isChargeable(): bool
+    {
+        return in_array($this->status, self::CHARGEABLE, true);
     }
 
     /**

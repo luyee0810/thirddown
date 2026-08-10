@@ -11,8 +11,13 @@
         <div class="min-w-0 flex-1">
             <h1 class="text-2xl font-semibold tracking-tight">{{ $student->full_name }}</h1>
             <p class="mt-0.5 text-sm text-neutral-500">
-                @if ($student->date_of_birth) Age {{ $student->date_of_birth->age }} @endif
+                @if (! is_null($student->age)) Age {{ $student->age }} @endif
                 @if ($student->parent_name) · Parent: {{ $student->parent_name }}@if ($student->parent_phone) ({{ $student->parent_phone }})@endif @endif
+            </p>
+            <p class="mt-1.5">
+                <span class="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold {{ $student->credits > 0 ? 'bg-emerald-50 text-emerald-700' : ($student->credits === 0 ? 'bg-neutral-100 text-neutral-600' : 'bg-red-50 text-red-700') }}">
+                    {{ $student->credits }} credit{{ abs($student->credits) === 1 ? '' : 's' }} remaining
+                </span>
             </p>
         </div>
         <a href="{{ route('students.edit', $student) }}"
