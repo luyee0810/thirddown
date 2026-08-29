@@ -66,6 +66,7 @@ class StudentFactory extends Factory
             'parent_phone' => $hasParent ? $this->faker->numerify('01#-###-####') : null,
             'notes' => $this->faker->boolean(20) ? $this->faker->sentence() : null,
             'is_active' => true,
+            'credits' => $this->faker->numberBetween(0, 20),
         ];
     }
 

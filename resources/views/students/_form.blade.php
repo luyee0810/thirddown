@@ -6,28 +6,28 @@
         <div>
             <label class="block text-sm font-medium text-neutral-700">First name</label>
             <input name="first_name" value="{{ old('first_name', $student->first_name ?? '') }}" required
-                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20">
+                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30">
         </div>
         <div>
             <label class="block text-sm font-medium text-neutral-700">Last name</label>
             <input name="last_name" value="{{ old('last_name', $student->last_name ?? '') }}" required
-                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20">
+                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30">
         </div>
         <div>
             <label class="block text-sm font-medium text-neutral-700">Date of birth <span class="text-neutral-400">(optional)</span></label>
             <input type="date" name="date_of_birth" value="{{ old('date_of_birth', optional($student->date_of_birth ?? null)->format('Y-m-d')) }}"
-                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20">
+                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30">
         </div>
         <x-age-field :age="$student->age ?? null" />
         <div>
             <label class="block text-sm font-medium text-neutral-700">Gender <span class="text-neutral-400">(optional)</span></label>
             <input name="gender" value="{{ old('gender', $student->gender ?? '') }}"
-                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20">
+                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30">
         </div>
         <div>
             <label class="block text-sm font-medium text-neutral-700">Remaining credits</label>
             <input type="number" name="credits" step="1" value="{{ old('credits', $student->credits ?? 0) }}"
-                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20">
+                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30">
             <p class="mt-1 text-xs text-neutral-400">One credit is used each time attendance is marked. May go negative.</p>
             @error('credits') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
         </div>
@@ -40,17 +40,17 @@
         <div>
             <label class="block text-sm font-medium text-neutral-700">Name</label>
             <input name="parent_name" value="{{ old('parent_name', $student->parent_name ?? '') }}"
-                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20">
+                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30">
         </div>
         <div>
             <label class="block text-sm font-medium text-neutral-700">Phone</label>
             <input name="parent_phone" value="{{ old('parent_phone', $student->parent_phone ?? '') }}"
-                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20">
+                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30">
         </div>
         <div class="sm:col-span-2">
             <label class="block text-sm font-medium text-neutral-700">Email</label>
             <input type="email" name="parent_email" value="{{ old('parent_email', $student->parent_email ?? '') }}"
-                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20">
+                class="mt-1.5 block w-full rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30">
         </div>
     </div>
 </div>
@@ -58,5 +58,5 @@
 <div>
     <label class="block text-sm font-medium text-neutral-700">Notes <span class="text-neutral-400">(optional)</span></label>
     <textarea name="notes" rows="2"
-        class="mt-1.5 block w-full max-w-2xl rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-500/20">{{ old('notes', $student->notes ?? '') }}</textarea>
+        class="mt-1.5 block w-full max-w-2xl rounded-lg border border-neutral-300 px-3 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30">{{ old('notes', $student->notes ?? '') }}</textarea>
 </div>

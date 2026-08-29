@@ -45,6 +45,26 @@ class StudentController extends Controller
     }
 
     /**
+     * Show the edit-student form.
+     */
+    public function edit(Student $student): View
+    {
+        return view('students.edit', compact('student'));
+    }
+
+    /**
+     * Update a student's details.
+     */
+    public function update(StoreStudentRequest $request, Student $student): RedirectResponse
+    {
+        $student->update($request->validated());
+
+        return redirect()
+            ->route('students.show', $student)
+            ->with('status', "{$student->full_name} updated.");
+    }
+
+    /**
      * Show a student with their classes and a multi-class enrol picker.
      */
     public function show(Student $student): View

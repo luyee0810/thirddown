@@ -79,6 +79,49 @@ class CoachWorkflowTest extends TestCase
         $this->assertDatabaseHas('students', ['first_name' => 'Sam', 'last_name' => 'Lee']);
     }
 
+    public function test_coach_can_edit_a_students_details(): void
+    {
+        $student = Student::create([
+            'first_name' => 'Sam', 'last_name' => 'Lee', 'parent_name' => 'Pat Lee',
+        ]);
+        $coach = $this->coach();
+
+        $this->actingAs($coach)
+            ->get(route('students.edit', $student))
+            ->assertOk()
+            ->assertSee('Pat Lee', false);
+
+        $this->actingAs($coach)
+            ->put(route('students.update', $student), [
+                'first_name' => 'Samantha',
+                'last_name' => 'Lee',
+                'parent_name' => 'Pat Lee',
+                'parent_phone' => '0123456789',
+            ])
+            ->assertRedirect(route('students.show', $student));
+
+        $this->assertDatabaseHas('students', [
+            'id' => $student->id,
+            'first_name' => 'Samantha',
+            'parent_phone' => '0123456789',
+        ]);
+    }
+
+    public function test_parent_cannot_edit_a_student_through_the_coach_area(): void
+    {
+        $student = Student::create(['first_name' => 'Sam', 'last_name' => 'Lee']);
+        $parent = User::create([
+            'name' => 'Parent', 'email' => 'parent@test.test', 'password' => 'password',
+            'role' => 'parent', 'is_active' => true,
+        ]);
+
+        $this->actingAs($parent)
+            ->put(route('students.update', $student), ['first_name' => 'Hacked', 'last_name' => 'Lee'])
+            ->assertRedirect(route('parent.dashboard'));
+
+        $this->assertDatabaseHas('students', ['id' => $student->id, 'first_name' => 'Sam']);
+    }
+
     public function test_coach_can_assign_students_to_a_class(): void
     {
         $coach = $this->coach();

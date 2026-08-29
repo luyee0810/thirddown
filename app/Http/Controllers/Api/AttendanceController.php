@@ -48,12 +48,13 @@ class AttendanceController extends Controller
     {
         abort_unless($session->trainingClass->coach_id === $request->user()->id, 403);
 
+        // Players left unmarked are simply absent from the payload.
         $data = $request->validate([
-            'attendance' => ['required', 'array'],
+            'attendance' => ['nullable', 'array'],
             'attendance.*' => ['in:present,absent,late,excused'],
         ]);
 
-        $save->execute($session, $data['attendance'], $request->user()->id);
+        $save->execute($session, $data['attendance'] ?? [], $request->user()->id);
 
         return response()->json(['message' => 'Attendance saved.']);
     }
